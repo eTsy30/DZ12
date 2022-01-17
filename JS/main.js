@@ -1,48 +1,153 @@
 class Heroes {
-    constructor(life, imj, name, hungry, clean, depression) {
+    constructor({ life, img, name, hungry, clean, dep }) {
         this.name = name;
-        this.imj = imj;
+        this.img = img;
         this.life = life;
         this.hungry = hungry;
         this.clean = clean;
-        this.depression = depression;
+        this.dep = dep;
+        this.id = Math.random(1000)
+        this.updateCharasteristic()
+    }
+    CHANGE_LIFE = 5
+    CHANGE_HUNGRY = 3
+    CHANGE_CLEAN = 10
+    CHANGE_DEP = 1
+    UPDATE_TIME = 1000
+    VALUE_RANDOM = 5
+    getCharacteristic() {
+        return {
+            name: this.name,
+            img: this.img,
+            life: this.life,
+            dep: this.dep,
+            clean: this.clean,
+            hungry: this.hungry,
+            id: this.id
+
+
+        };
+    }
+    updateCharasteristic() {
+
+        setInterval(() => {
+            if (this.hungry > 0 && this.dep > 0 && this.clean > 0) {
+                this.hungry -= Math.floor(Math.random() * this.VALUE_RANDOM)
+                this.dep -= Math.floor(Math.random() * this.VALUE_RANDOM)
+                this.clean -= Math.floor(Math.random() * this.VALUE_RANDOM)
+            } else {
+                this.life -= Math.floor(Math.random() * this.VALUE_RANDOM)
+            }
+
+
+        }, this.UPDATE_TIME)
+    }
+    onLife() {
+        this.life += this.CHANGE_LIFE;
+    }
+    onHungry() {
+        console.log('hungry=', this);
+        this.hungry += this.CHANGE_HUNGRY;
+
+    }
+    onClean() {
+        console.log('clear=', this);
+        this.clean += this.CHANGE_CLEAN;
+    }
+    onDep() {
+        console.log('dep=', this);
+        this.dep = this.CHANGE_CLEAN
     }
 }
-let h0 = new Heroes(99, "img/0.svg", "charmander", 10, 10, 10);
-let h1 = new Heroes(82, "img/1.svg", "abra", 9, 10, 8);
-let h2 = new Heroes(97, "img/2.svg", "arcanine", 10, 8, 10);
-let h3 = new Heroes(77, "img/3.svg", "articuno", 10, 8, 8);
-let h4 = new Heroes(67, "img/4.svg", "blastoise", 10, 9, 9);
-let h5 = new Heroes(70, "img/5.svg", "bulbasaur", 10, 10, 10);
-let h6 = new Heroes(81, "img/6.svg", "butterfree", 9, 10, 8);
-let h7 = new Heroes(92, "img/7.svg", "caterpie", 10, 8, 10);
-let h8 = new Heroes(72, "img/8.svg", "chansey", 10, 8, 8);
-let h9 = new Heroes(62, "img/9.svg", "charizard", 10, 9, 9);
-let h10 = new Heroes(100, "img/10.svg", "clefairy", 10, 10, 10);
-let arr = [h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10];
 
-function addCard() {
-    let i = arr[Math.floor(Math.random() * arr.length)];
-    let main = document.querySelector("body");
-    let div = document.createElement("div");
-    console.log(i.names);
-    div.className = "some";
-    div.innerHTML = `<strong>name ${i.name}</strong> 
-                    <br><img src=" ${i.imj}" alt="#">
-                    <br> <strong>life ${i.life}</strong> 
-                    <br> <strong>hungry ${i.hungry}</strong> 
-                    <br> <strong>clean ${i.clean}</strong> 
-                    <br> <strong>depression ${i.depression}</strong>`;
+const heroesData = [
+    {
+        name: "charmander",
+        life: 100,
+        img: "img/0.svg",
+        hungry: 50,
+        clean: 33,
+        dep: 10,
+        id: 1
+    },
+    {
+        name: "abra",
+        life: 100,
+        img: "img/1.svg",
+        hungry: 50,
+        clean: 33,
+        dep: 10,
+        id: 2
+    },
+   
+    {
+        name: "articuno",
+        life: 100,
+        img: "img/3.svg",
+        hungry: 50,
+        clean: 33,
+        dep: 10,
+        id: 4
+    },
+    {
+        name: "blastoise",
+        life: 100,
+        img: "img/4.svg",
+        hungry: 50,
+        clean: 33,
+        dep: 10,
+        id: 5
+    },
+];
+function getRandomHero(arr) {
+    const hero = arr[Math.floor(Math.random() * arr.length)];
+    const create = new Heroes(hero)
+    return create
+}
+function showCard() {
+    const hero = getRandomHero(heroesData)
 
-    document.body.append(div);
+    render(hero)
 }
 
-/*todo
-- Имя
-- Изображение
-- Жизненная Сила
-- Голод
-- Гигиена
-- Депрессия
-*/
-////////////////
+function render(hero) {
+    const { name, img, life, hungry, clean, dep, id } = hero.getCharacteristic()
+    const { onHungry, onDep, onClean } = hero
+    const main = document.querySelector("body");
+    const div = document.createElement("div");
+    div.className ='cont'
+    const bindOnHyngry = onHungry.bind(hero)
+    const bindonDep = onDep.bind(hero)
+    const bindonClean = onClean.bind(hero)
+    
+    
+    div.innerHTML = `
+    <div class="card">
+    <strong id='name_${id}' >name ${name}</strong>
+     <br><img class="img" id='img_${id}'src=" ${img}" alt="#">
+     <br> <strong id='life_${id}'>life ${life}</strong>
+     <br> <strong id='hyngry_${id}' >hungry ${hungry}</strong>
+     <br> <strong id='claen_${id}'>clean ${clean}</strong>
+     <br> <strong id='dep_${id}'>dep ${dep}</strong>
+     <button class="btn" id='eat_${id}'>EAT</button> 
+     <button class="btn" id='dep_${id}'>Depression</button>
+    <button class="btn" id='clean_${id}'>Clean</button>
+    </div>
+                     `;
+    console.log('render');
+    document.body.append(div);
+    document.getElementById(`eat_${id}`).addEventListener('click', bindOnHyngry)
+    document.getElementById(`clean_${id}`).addEventListener('click', bindonClean)
+    document.getElementById(`dep_${id}`).addEventListener('click', bindonDep)
+    setInterval(function () {
+        const { name, life, hungry, clean, dep } = hero.getCharacteristic()
+        document.getElementById(`name_${id}`).innerText = `Name ${name}`;
+        document.getElementById(`life_${id}`).innerText = `Life ${life}`;
+        document.getElementById(`hyngry_${id}`).innerText = `Hungry ${hungry}`;
+        document.getElementById(`claen_${id}`).innerText = `Clean ${clean}`;
+        document.getElementById(`dep_${id}`).innerText = `Depresion ${dep}`;
+
+    }, 500)
+}
+
+
