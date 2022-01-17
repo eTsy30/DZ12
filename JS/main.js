@@ -46,17 +46,15 @@ class Heroes {
         this.life += this.CHANGE_LIFE;
     }
     onHungry() {
-        console.log('hungry=', this);
         this.hungry += this.CHANGE_HUNGRY;
 
     }
     onClean() {
-        console.log('clear=', this);
         this.clean += this.CHANGE_CLEAN;
     }
+
     onDep() {
-        console.log('dep=', this);
-        this.dep = this.CHANGE_CLEAN
+        this.dep += this.CHANGE_CLEAN;
     }
 }
 
@@ -113,14 +111,13 @@ function showCard() {
 function render(hero) {
     const { name, img, life, hungry, clean, dep, id } = hero.getCharacteristic()
     const { onHungry, onDep, onClean } = hero
-    const main = document.querySelector("body");
     const div = document.createElement("div");
-    div.className ='cont'
     const bindOnHyngry = onHungry.bind(hero)
     const bindonDep = onDep.bind(hero)
     const bindonClean = onClean.bind(hero)
-    
-    
+    console.log(bindonDep);
+    console.log(bindOnHyngry);
+
     div.innerHTML = `
     <div class="card">
     <strong id='name_${id}' >name ${name}</strong>
