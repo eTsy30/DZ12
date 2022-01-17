@@ -115,8 +115,8 @@ function render(hero) {
     const bindOnHyngry = onHungry.bind(hero)
     const bindonDep = onDep.bind(hero)
     const bindonClean = onClean.bind(hero)
-    console.log(bindonDep);
-    console.log(bindOnHyngry);
+   // console.log(bindonDep);
+   // console.log(bindOnHyngry);
 
     div.innerHTML = `
     <div class="card">
@@ -131,7 +131,7 @@ function render(hero) {
     <button class="btn" id='clean_${id}'>Clean</button>
     </div>
                      `;
-    console.log('render');
+    //console.log('render');
     document.body.append(div);
     document.getElementById(`eat_${id}`).addEventListener('click', bindOnHyngry)
     document.getElementById(`clean_${id}`).addEventListener('click', bindonClean)
